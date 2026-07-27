@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
@@ -10,9 +10,7 @@ export default function MainLayout({ children }: Props) {
   return (
     <>
       <Navbar />
-
       <main>{children}</main>
-
       <Footer />
     </>
   );
