@@ -1,13 +1,32 @@
 import { Menu, UserRound, X } from "lucide-react";
 import { useState } from "react";
+import { Link, NavLink } from "react-router";
 
 const navigation = [
-  { name: "Inicio", href: "#inicio" },
-  { name: "Mapa", href: "#mapa" },
-  { name: "Eventos", href: "#eventos" },
-  { name: "Explorar", href: "#explorar" },
-  { name: "Marketplace", href: "#marketplace" },
-  { name: "ANDES IA", href: "#andes" },
+  {
+    name: "Inicio",
+    to: "/",
+  },
+  {
+    name: "Mapa",
+    to: "/mapa",
+  },
+  {
+    name: "Eventos",
+    to: "/eventos",
+  },
+  {
+    name: "Explorar",
+    to: "/explorar",
+  },
+  {
+    name: "Marketplace",
+    to: "/marketplace",
+  },
+  {
+    name: "ANDES IA",
+    to: "/andes",
+  },
 ];
 
 export default function Navbar() {
@@ -23,25 +42,33 @@ export default function Navbar() {
         className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6"
         aria-label="Navegación principal"
       >
-        <a
-          href="#inicio"
+        <Link
+          to="/"
           className="text-xl font-black tracking-tight text-slate-950"
           onClick={closeMenu}
         >
           VIVE
           <span className="text-blue-600">+</span>
           COLOMBIA
-        </a>
+        </Link>
 
-        <div className="hidden items-center gap-7 lg:flex">
+        <div className="hidden items-center gap-6 lg:flex">
           {navigation.map((item) => (
-            <a
+            <NavLink
               key={item.name}
-              href={item.href}
-              className="text-sm font-bold text-slate-600 transition hover:text-blue-600"
+              to={item.to}
+              end={item.to === "/"}
+              className={({ isActive }) =>
+                [
+                  "text-sm font-bold transition",
+                  isActive
+                    ? "text-blue-600"
+                    : "text-slate-600 hover:text-blue-600",
+                ].join(" ")
+              }
             >
               {item.name}
-            </a>
+            </NavLink>
           ))}
         </div>
 
@@ -54,12 +81,12 @@ export default function Navbar() {
             Iniciar sesión
           </button>
 
-          <a
-            href="#andes"
+          <Link
+            to="/andes"
             className="rounded-full bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-500"
           >
             Hablar con ANDES
-          </a>
+          </Link>
         </div>
 
         <button
@@ -85,14 +112,22 @@ export default function Navbar() {
         >
           <div className="mx-auto flex max-w-7xl flex-col">
             {navigation.map((item) => (
-              <a
+              <NavLink
                 key={item.name}
-                href={item.href}
+                to={item.to}
+                end={item.to === "/"}
                 onClick={closeMenu}
-                className="border-b border-slate-100 py-4 font-bold text-slate-700 transition hover:text-blue-600"
+                className={({ isActive }) =>
+                  [
+                    "border-b border-slate-100 py-4 font-bold transition",
+                    isActive
+                      ? "text-blue-600"
+                      : "text-slate-700 hover:text-blue-600",
+                  ].join(" ")
+                }
               >
                 {item.name}
-              </a>
+              </NavLink>
             ))}
 
             <button
@@ -103,13 +138,13 @@ export default function Navbar() {
               Iniciar sesión
             </button>
 
-            <a
-              href="#andes"
+            <Link
+              to="/andes"
               onClick={closeMenu}
               className="mt-3 rounded-2xl bg-blue-600 px-5 py-3 text-center font-bold text-white"
             >
               Hablar con ANDES
-            </a>
+            </Link>
           </div>
         </div>
       )}

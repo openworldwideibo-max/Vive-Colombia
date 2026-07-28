@@ -1,17 +1,17 @@
-import type { ReactNode } from "react";
-import Navbar from "./Navbar";
+import { Outlet } from "react-router";
 import Footer from "./Footer";
+import Navbar from "./Navbar";
 
-interface Props {
-  children: ReactNode;
-}
-
-export default function MainLayout({ children }: Props) {
+export default function MainLayout() {
   return (
-    <>
+    <div className="flex min-h-screen flex-col bg-white">
       <Navbar />
-      <main>{children}</main>
+
+      <main className="flex-1">
+        <Outlet />
+      </main>
+
       <Footer />
-    </>
+    </div>
   );
 }
