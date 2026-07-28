@@ -1,31 +1,118 @@
-export default function Navbar() {
-  return (
-    <header className="sticky top-0 z-50 bg-white border-b border-slate-200">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+import { Menu, UserRound, X } from "lucide-react";
+import { useState } from "react";
 
-        <h1 className="text-xl font-bold">
+const navigation = [
+  { name: "Inicio", href: "#inicio" },
+  { name: "Mapa", href: "#mapa" },
+  { name: "Eventos", href: "#eventos" },
+  { name: "Explorar", href: "#explorar" },
+  { name: "Marketplace", href: "#marketplace" },
+  { name: "ANDES IA", href: "#andes" },
+];
+
+export default function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
+      <nav
+        className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6"
+        aria-label="Navegación principal"
+      >
+        <a
+          href="#inicio"
+          className="text-xl font-black tracking-tight text-slate-950"
+          onClick={closeMenu}
+        >
           VIVE
           <span className="text-blue-600">+</span>
           COLOMBIA
-        </h1>
+        </a>
 
-        <nav className="hidden gap-8 md:flex">
+        <div className="hidden items-center gap-7 lg:flex">
+          {navigation.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              className="text-sm font-bold text-slate-600 transition hover:text-blue-600"
+            >
+              {item.name}
+            </a>
+          ))}
+        </div>
 
-          <a href="#">Inicio</a>
+        <div className="hidden items-center gap-3 lg:flex">
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-5 py-3 text-sm font-bold text-slate-800 transition hover:border-blue-600 hover:text-blue-600"
+          >
+            <UserRound className="h-4 w-4" />
+            Iniciar sesión
+          </button>
 
-          <a href="#">Mapa</a>
+          <a
+            href="#andes"
+            className="rounded-full bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-500"
+          >
+            Hablar con ANDES
+          </a>
+        </div>
 
-          <a href="#">Eventos</a>
+        <button
+          type="button"
+          className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 text-slate-800 transition hover:border-blue-600 hover:text-blue-600 lg:hidden"
+          onClick={() => setIsMenuOpen((currentValue) => !currentValue)}
+          aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-navigation"
+        >
+          {isMenuOpen ? (
+            <X className="h-6 w-6" />
+          ) : (
+            <Menu className="h-6 w-6" />
+          )}
+        </button>
+      </nav>
 
-          <a href="#">Explorar</a>
+      {isMenuOpen && (
+        <div
+          id="mobile-navigation"
+          className="border-t border-slate-200 bg-white px-6 py-6 lg:hidden"
+        >
+          <div className="mx-auto flex max-w-7xl flex-col">
+            {navigation.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                onClick={closeMenu}
+                className="border-b border-slate-100 py-4 font-bold text-slate-700 transition hover:text-blue-600"
+              >
+                {item.name}
+              </a>
+            ))}
 
-          <a href="#">Marketplace</a>
+            <button
+              type="button"
+              className="mt-6 inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-300 px-5 py-3 font-bold text-slate-800"
+            >
+              <UserRound className="h-5 w-5" />
+              Iniciar sesión
+            </button>
 
-          <a href="#">ANDES IA</a>
-
-        </nav>
-
-      </div>
+            <a
+              href="#andes"
+              onClick={closeMenu}
+              className="mt-3 rounded-2xl bg-blue-600 px-5 py-3 text-center font-bold text-white"
+            >
+              Hablar con ANDES
+            </a>
+          </div>
+        </div>
+      )}
     </header>
-  )
+  );
 }

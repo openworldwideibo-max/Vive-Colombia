@@ -1,10 +1,4 @@
-import {
-  Clock3,
-  MapPin,
-  Route,
-  Star,
-  Users,
-} from "lucide-react";
+import { Clock3, MapPin, Route, Star, Users } from "lucide-react";
 
 const routes = [
   {
@@ -44,7 +38,7 @@ const routes = [
 
 export default function RecommendedRoutes() {
   return (
-    <section className="bg-slate-50 py-20">
+    <section id="mapa" className="bg-slate-50 py-20">
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">

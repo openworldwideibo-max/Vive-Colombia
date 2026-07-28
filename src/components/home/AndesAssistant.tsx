@@ -77,6 +77,7 @@ export default function AndesAssistant() {
 
                 <div>
                   <p className="font-black">ANDES</p>
+
                   <p className="text-sm text-emerald-600">
                     Guía inteligente disponible
                   </p>
