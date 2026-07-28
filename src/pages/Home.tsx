@@ -1,5 +1,10 @@
-import Hero from "../components/home/Hero";
+import { Categories, Hero } from "../components/home";
 
 export default function Home() {
-  return <Hero />;
+  return (
+    <>
+      <Hero />
+      <Categories />
+    </>
+  );
 }
