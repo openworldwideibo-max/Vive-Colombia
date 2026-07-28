@@ -6,29 +6,56 @@ import {
   Search,
   Sparkles,
 } from "lucide-react";
+import { useState } from "react";
+import type { FormEvent } from "react";
+import { Link, useNavigate } from "react-router";
 
 const quickActions = [
   {
     title: "Explorar el mapa",
     description: "Encuentra lugares y experiencias cerca de ti.",
     icon: Map,
-    href: "#mapa",
+    to: "/mapa",
   },
   {
     title: "Eventos de hoy",
     description: "Descubre actividades y planes para disfrutar.",
     icon: CalendarDays,
-    href: "#eventos",
+    to: "/eventos",
   },
   {
     title: "Pregúntale a ANDES",
     description: "Recibe recomendaciones personalizadas con IA.",
     icon: Bot,
-    href: "#andes",
+    to: "/andes",
   },
 ];
 
 export default function Hero() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const cleanSearchTerm = searchTerm.trim();
+
+    if (!cleanSearchTerm) {
+      navigate("/explorar");
+      return;
+    }
+
+    navigate(`/explorar?busqueda=${encodeURIComponent(cleanSearchTerm)}`);
+  };
+
+  const handleSurpriseMe = () => {
+    navigate("/explorar?modo=sorpresa");
+  };
+
+  const handleNearMe = () => {
+    navigate("/mapa?cerca=true");
+  };
+
   return (
     <section
       id="inicio"
@@ -56,15 +83,18 @@ export default function Hero() {
 
           <form
             className="mx-auto mt-10 flex max-w-3xl flex-col gap-3 rounded-3xl border border-white/10 bg-white p-3 shadow-2xl sm:flex-row"
-            onSubmit={(event) => event.preventDefault()}
+            onSubmit={handleSearch}
           >
             <label className="flex min-h-14 flex-1 items-center gap-3 px-3">
               <Search className="h-5 w-5 shrink-0 text-slate-400" />
 
               <input
                 type="search"
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
                 placeholder="Busca lugares, ciudades, eventos o experiencias..."
                 className="w-full bg-transparent text-slate-900 outline-none placeholder:text-slate-400"
+                aria-label="Buscar lugares, ciudades, eventos o experiencias"
               />
             </label>
 
@@ -79,6 +109,7 @@ export default function Hero() {
           <div className="mt-5 flex flex-wrap justify-center gap-3">
             <button
               type="button"
+              onClick={handleSurpriseMe}
               className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-3 text-sm font-bold transition hover:bg-white hover:text-slate-950"
             >
               <Sparkles className="h-4 w-4" />
@@ -87,6 +118,7 @@ export default function Hero() {
 
             <button
               type="button"
+              onClick={handleNearMe}
               className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-3 text-sm font-bold transition hover:bg-white hover:text-slate-950"
             >
               <LocateFixed className="h-4 w-4" />
@@ -100,9 +132,9 @@ export default function Hero() {
             const Icon = action.icon;
 
             return (
-              <a
+              <Link
                 key={action.title}
-                href={action.href}
+                to={action.to}
                 className="group rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur transition hover:-translate-y-1 hover:border-blue-400/40 hover:bg-white/10"
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-500/15 text-blue-300 transition group-hover:bg-blue-600 group-hover:text-white">
@@ -118,7 +150,7 @@ export default function Hero() {
                 <span className="mt-5 inline-block text-sm font-bold text-blue-300">
                   Descubrir →
                 </span>
-              </a>
+              </Link>
             );
           })}
         </div>
