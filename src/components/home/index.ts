@@ -3,3 +3,4 @@ export { default as Categories } from "./Categories";
 export { default as FeaturedPlaces } from "./FeaturedPlaces";
 export { default as UpcomingEvents } from "./UpcomingEvents";
 export { default as AndesAssistant } from "./AndesAssistant";
+export { default as RecommendedRoutes } from "./RecommendedRoutes";

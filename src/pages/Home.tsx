@@ -3,6 +3,7 @@ import {
   Categories,
   FeaturedPlaces,
   Hero,
+  RecommendedRoutes,
   UpcomingEvents,
 } from "../components/home";
 
@@ -13,6 +14,7 @@ export default function Home() {
       <Categories />
       <FeaturedPlaces />
       <UpcomingEvents />
+      <RecommendedRoutes />
       <AndesAssistant />
     </>
   );
