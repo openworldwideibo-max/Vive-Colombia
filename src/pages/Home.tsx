@@ -2,6 +2,7 @@ import {
   Categories,
   FeaturedPlaces,
   Hero,
+  UpcomingEvents,
 } from "../components/home";
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
       <Hero />
       <Categories />
       <FeaturedPlaces />
+      <UpcomingEvents />
     </>
   );
 }
