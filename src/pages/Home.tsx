@@ -1,4 +1,5 @@
 import {
+  AndesAssistant,
   Categories,
   FeaturedPlaces,
   Hero,
@@ -12,6 +13,7 @@ export default function Home() {
       <Categories />
       <FeaturedPlaces />
       <UpcomingEvents />
+      <AndesAssistant />
     </>
   );
 }
