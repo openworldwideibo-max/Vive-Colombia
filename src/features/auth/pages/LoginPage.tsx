@@ -56,7 +56,9 @@ export default function LoginPage() {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>,
+  ) {
     event.preventDefault();
 
     setError("");
@@ -87,10 +89,9 @@ export default function LoginPage() {
   }
 
   return (
-    <section className="min-h-screen bg-slate-50 flex items-center justify-center px-6">
+    <section className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
       <div className="w-full max-w-md rounded-3xl bg-white p-8 shadow-xl">
-
-        <h1 className="text-3xl font-black text-center">
+        <h1 className="text-center text-3xl font-black">
           Iniciar sesión
         </h1>
 
@@ -99,7 +100,10 @@ export default function LoginPage() {
         </p>
 
         {error && (
-          <div className="mt-6 rounded-xl bg-red-100 p-3 text-red-700">
+          <div
+            role="alert"
+            className="mt-6 rounded-xl bg-red-100 p-3 text-red-700"
+          >
             {error}
           </div>
         )}
@@ -107,8 +111,8 @@ export default function LoginPage() {
         <button
           type="button"
           onClick={handleGoogleLogin}
-          disabled={googleLoading}
-          className="mt-6 w-full rounded-xl border p-3 font-bold hover:bg-slate-100"
+          disabled={googleLoading || loading}
+          className="mt-6 w-full rounded-xl border p-3 font-bold transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {googleLoading ? (
             <LoaderCircle className="mx-auto h-5 w-5 animate-spin" />
@@ -126,44 +130,66 @@ export default function LoginPage() {
           className="space-y-5"
         >
           <div>
-            <label className="font-semibold">
+            <label
+              htmlFor="login-email"
+              className="font-semibold"
+            >
               Correo electrónico
             </label>
 
-            <div className="mt-2 flex items-center gap-2 rounded-xl border px-4">
-              <Mail className="h-5 w-5 text-slate-400" />
+            <div className="mt-2 flex items-center gap-2 rounded-xl border px-4 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100">
+              <Mail className="h-5 w-5 shrink-0 text-slate-400" />
 
               <input
+                id="login-email"
                 type="email"
                 required
-                className="h-12 w-full outline-none"
+                autoComplete="email"
+                placeholder="correo@ejemplo.com"
+                className="h-12 w-full bg-transparent outline-none"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(event) =>
+                  setEmail(event.target.value)
+                }
               />
             </div>
           </div>
 
           <div>
-            <label className="font-semibold">
+            <label
+              htmlFor="login-password"
+              className="font-semibold"
+            >
               Contraseña
             </label>
 
-            <div className="mt-2 flex items-center gap-2 rounded-xl border px-4">
-              <LockKeyhole className="h-5 w-5 text-slate-400" />
+            <div className="mt-2 flex items-center gap-2 rounded-xl border px-4 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100">
+              <LockKeyhole className="h-5 w-5 shrink-0 text-slate-400" />
 
               <input
+                id="login-password"
                 type={showPassword ? "text" : "password"}
                 required
-                className="h-12 w-full outline-none"
+                autoComplete="current-password"
+                placeholder="Escribe tu contraseña"
+                className="h-12 w-full bg-transparent outline-none"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(event) =>
+                  setPassword(event.target.value)
+                }
               />
 
               <button
                 type="button"
                 onClick={() =>
-                  setShowPassword(!showPassword)
+                  setShowPassword((current) => !current)
                 }
+                aria-label={
+                  showPassword
+                    ? "Ocultar contraseña"
+                    : "Mostrar contraseña"
+                }
+                className="rounded-lg p-1 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
               >
                 {showPassword ? (
                   <EyeOff className="h-5 w-5" />
@@ -174,10 +200,19 @@ export default function LoginPage() {
             </div>
           </div>
 
+          <div className="text-right">
+            <Link
+              to="/recuperar-contrasena"
+              className="text-sm font-bold text-blue-600 transition hover:text-blue-500"
+            >
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </div>
+
           <button
             type="submit"
-            disabled={loading}
-            className="w-full rounded-xl bg-blue-600 py-3 font-bold text-white hover:bg-blue-500"
+            disabled={loading || googleLoading}
+            className="w-full rounded-xl bg-blue-600 py-3 font-bold text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? (
               <LoaderCircle className="mx-auto h-5 w-5 animate-spin" />
@@ -191,12 +226,11 @@ export default function LoginPage() {
           ¿No tienes cuenta?{" "}
           <Link
             to="/registro"
-            className="font-bold text-blue-600"
+            className="font-bold text-blue-600 transition hover:text-blue-500"
           >
             Regístrate
           </Link>
         </p>
-
       </div>
     </section>
   );

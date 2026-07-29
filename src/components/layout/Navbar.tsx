@@ -1,6 +1,16 @@
-import { Menu, UserRound, X } from "lucide-react";
+import {
+  LoaderCircle,
+  LogOut,
+  Menu,
+  UserRound,
+  X,
+} from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink } from "react-router";
+import {
+  logoutUser,
+  useAuth,
+} from "../../features/auth";
 
 const navigation = [
   {
@@ -30,10 +40,26 @@ const navigation = [
 ];
 
 export default function Navbar() {
+  const { user, isLoading, isAuthenticated } = useAuth();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+
+    try {
+      await logoutUser();
+      closeMenu();
+    } catch (error) {
+      console.error("No fue posible cerrar sesión:", error);
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   return (
@@ -73,13 +99,56 @@ export default function Navbar() {
         </div>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <button
-            type="button"
-            className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-5 py-3 text-sm font-bold text-slate-800 transition hover:border-blue-600 hover:text-blue-600"
-          >
-            <UserRound className="h-4 w-4" />
-            Iniciar sesión
-          </button>
+          {isLoading ? (
+            <div className="flex h-12 items-center px-5">
+              <LoaderCircle className="h-5 w-5 animate-spin text-blue-600" />
+            </div>
+          ) : isAuthenticated && user ? (
+            <>
+              <Link
+                to="/mi-cuenta"
+                className="inline-flex items-center gap-3 rounded-full border border-slate-300 px-4 py-2 transition hover:border-blue-600"
+              >
+                {user.photoURL ? (
+                  <img
+                    src={user.photoURL}
+                    alt={user.displayName ?? "Usuario"}
+                    className="h-8 w-8 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                    <UserRound className="h-4 w-4" />
+                  </div>
+                )}
+
+                <span className="max-w-32 truncate text-sm font-bold text-slate-800">
+                  {user.displayName ?? "Mi cuenta"}
+                </span>
+              </Link>
+
+              <button
+                type="button"
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-red-200 text-red-600 transition hover:bg-red-50 disabled:opacity-60"
+                aria-label="Cerrar sesión"
+              >
+                {isLoggingOut ? (
+                  <LoaderCircle className="h-5 w-5 animate-spin" />
+                ) : (
+                  <LogOut className="h-5 w-5" />
+                )}
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/iniciar-sesion"
+              className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-5 py-3 text-sm font-bold text-slate-800 transition hover:border-blue-600 hover:text-blue-600"
+            >
+              <UserRound className="h-4 w-4" />
+              Iniciar sesión
+            </Link>
+          )}
 
           <Link
             to="/andes"
@@ -130,13 +199,46 @@ export default function Navbar() {
               </NavLink>
             ))}
 
-            <button
-              type="button"
-              className="mt-6 inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-300 px-5 py-3 font-bold text-slate-800"
-            >
-              <UserRound className="h-5 w-5" />
-              Iniciar sesión
-            </button>
+            {isLoading ? (
+              <div className="mt-6 flex justify-center">
+                <LoaderCircle className="h-6 w-6 animate-spin text-blue-600" />
+              </div>
+            ) : isAuthenticated && user ? (
+              <>
+                <Link
+                  to="/mi-cuenta"
+                  onClick={closeMenu}
+                  className="mt-6 flex items-center gap-3 rounded-2xl border border-slate-300 px-5 py-4 font-bold text-slate-800"
+                >
+                  <UserRound className="h-5 w-5 text-blue-600" />
+                  {user.displayName ?? "Mi cuenta"}
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                  className="mt-3 inline-flex items-center justify-center gap-2 rounded-2xl border border-red-200 px-5 py-3 font-bold text-red-600"
+                >
+                  {isLoggingOut ? (
+                    <LoaderCircle className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <LogOut className="h-5 w-5" />
+                  )}
+
+                  Cerrar sesión
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/iniciar-sesion"
+                onClick={closeMenu}
+                className="mt-6 inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-300 px-5 py-3 font-bold text-slate-800"
+              >
+                <UserRound className="h-5 w-5" />
+                Iniciar sesión
+              </Link>
+            )}
 
             <Link
               to="/andes"
